@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Buddy{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'main/styles.css' %}" rel="stylesheet">
+        <script>
+ 
+ const options = {
+   method: 'GET',
+   headers: {
+     'X-RapidAPI-Key': 'febd3e5e3fmsh9e0ca3ea11b50e2p1c581ejsn34907ad1e431',
+     'X-RapidAPI-Host': 'youtube-search-results.p.rapidapi.com'
+   }
+ };
+ 
+       function getRandomList(rand) {
+         // get random index value
+         const randomIndex = Math.floor(Math.random() * rand.length);
+
+         // get random item
+         const item = rand[randomIndex];
+
+         return item;
+       }
+
+       const randomList = ["math", "ancient history", "computer science", "science", "literature", "economics"];
+       const random = getRandomList(randomList);
+
+       // Send a GET request to the URL
+       fetch(`https://youtube-search-results.p.rapidapi.com/youtube-search/?q=${random}`, options)        
+       // Put response into json form
+       .then(response => response.json())
+       .then(data => {
+         const results = data.items; 
+         document.querySelector('.card-subtitle').innerHTML = `<strong>category: </strong>${random}`
+         results.forEach(result => {
+           console.log(result)
+           for (let title in result) {
+             document.querySelector('.card-title').innerHTML = `${result.title}`
+             document.querySelector('.card-text').innerHTML = `<strong>url: </strong>${result.url}`
+           }
+         })
+    
+       })
+       .catch(error => {console.log('Error:', error);});
+
+    
+</script>
+    </head>
+    <body>
+
+<div class="container">
+    <h1 id="title">Educational</h1>
+    <div class="card" style="width: auto; height: auto; margin-right: auto; margin-left: auto;">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <h6 class="card-subtitle"></h6>
+          <p class="card-text"></p>
+          <a href="{% url 'educational' %}" id="new" class="btn btn-primary">Something Educational</a>
+        </div>
+      </div> 
+    </div>       
+
+</body>
